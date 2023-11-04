@@ -1,7 +1,7 @@
-use cairo_lang_diagnostics::DiagnosticsBuilder;
+
 use cairo_lang_filesystem::ids::FileId;
 use cairo_lang_parser::db::ParserGroup;
-use cairo_lang_parser::parser::Parser;
+
 use cairo_lang_parser::printer::print_tree;
 use cairo_lang_parser::utils::{get_syntax_root_and_diagnostics_from_file, SimpleParserDatabase};
 use cairo_lang_syntax::node::kind::SyntaxKind::{
