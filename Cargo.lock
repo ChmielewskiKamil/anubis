@@ -6,7 +6,10 @@ version = 3
 name = "anubis"
 version = "0.1.0"
 dependencies = [
+ "cairo-lang-diagnostics",
+ "cairo-lang-filesystem",
  "cairo-lang-parser",
+ "cairo-lang-syntax",
 ]
 
 [[package]]
