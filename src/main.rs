@@ -21,7 +21,7 @@ fn main() {
     // False and False because we don't want colored output and trivia
     let ast_visual = print_tree(&db, &syntax_root, false, false);
     // Write the content to a markdown file
-    let mut file = File::create("test_files/ast_visual.md").unwrap();
+    let mut file = File::create("test_files/example_ast.md").unwrap();
     file.write_all(ast_visual.as_bytes()).unwrap();
 
     for node in ast {
