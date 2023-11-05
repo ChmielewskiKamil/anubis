@@ -1,7 +1,7 @@
 use std::collections::HashSet;
 
 use cairo_lang_parser::utils::SimpleParserDatabase;
-use cairo_lang_syntax::node::{kind::SyntaxKind, SyntaxNode};
+use cairo_lang_syntax::node::{db::SyntaxGroup, kind::SyntaxKind, SyntaxNode};
 
 pub fn extract_target_from_node(
     target: SyntaxKind,
@@ -25,25 +25,28 @@ pub fn walk_node_for_targets(
         println!("Found a match: {:?}", node.kind(db));
         matches.push(node.clone());
     }
-
+    println!("No match: {:?}", node.kind(db));
     match node.kind(db) {
         SyntaxKind::SyntaxFile => {
             println!("entered syntax file arm");
-            node.descendants(db)
-                .skip(1)
-                .for_each(|item| matches.append(&mut walk_node_for_targets(targets, item, db)));
+            db.get_children(node).iter().for_each(|child| {
+                println!("{:?}", child.kind(db));
+                matches.append(&mut walk_node_for_targets(targets, child.clone(), db))
+            });
         }
         SyntaxKind::ItemList => {
             println!("entered item list arm");
-            node.descendants(db)
-                .skip(1)
-                .for_each(|item| matches.append(&mut walk_node_for_targets(targets, item, db)));
+            db.get_children(node).iter().for_each(|child| {
+                println!("{:?}", child.kind(db));
+                matches.append(&mut walk_node_for_targets(targets, child.clone(), db))
+            });
         }
         SyntaxKind::FunctionWithBody => {
             println!("entered function with body arm");
-            for item in node.descendants(db).skip(1) {
-                matches.append(&mut walk_node_for_targets(targets, item, db))
-            }
+            db.get_children(node).iter().for_each(|child| {
+                println!("{:?}", child.kind(db));
+                matches.append(&mut walk_node_for_targets(targets, child.clone(), db))
+            });
         }
         _ => {}
     }
