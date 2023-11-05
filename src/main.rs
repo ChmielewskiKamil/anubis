@@ -1,4 +1,5 @@
 mod analyser;
+use analyser::qa::unused_parameter::unused_parameter_qa;
 use analyser::*;
 use std::env::args;
 
@@ -25,25 +26,7 @@ fn main() {
     // 1st argument is occupied by the name of the executable
     file_path.push(args[2].clone());
     let file_id = FileId::new(&db, file_path);
-    let ast = db.file_syntax(file_id).unwrap().descendants(&db);
-    
-    for node in ast {
-        if node.kind(&db) == FunctionWithBody {
-            // Traverse children of `FunctionWithBody` to find `FunctionDeclaration`
-            for child in node.descendants(&db) {
-                if child.kind(&db) == FunctionDeclaration {
-                    // Now, find the `name` node within `FunctionDeclaration`
-                    for name_child in child.descendants(&db) {
-                        if name_child.kind(&db) == TokenIdentifier {
-                            // This should be the function name
-                            println!("Function name: {:?}", name_child.text(&db).unwrap());
-                            println!("Location: {:?}", name_child.offset().position_in_file(&db, file_id));
-                            break; // Break after finding the name
-                        }
-                    }
-                    break; // Break after processing `FunctionDeclaration`
-                }
-            }
-        }
-    }
+    let ast = db.file_syntax(file_id).unwrap();
+
+    unused_parameter_qa(ast, &db);
 }
