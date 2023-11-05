@@ -1,17 +1,15 @@
 mod analyser;
 use analyser::qa::unused_parameter::unused_parameter_qa;
-use analyser::*;
+
 use std::env::args;
 
 use cairo_lang_filesystem::ids::FileId;
 use cairo_lang_parser::db::ParserGroup;
 
 use cairo_lang_parser::utils::SimpleParserDatabase;
-use cairo_lang_syntax::node::kind::SyntaxKind::{
-    FunctionDeclaration, FunctionWithBody, TokenIdentifier,
-};
-use std::io::prelude::*;
-use std::{fs::File, path::PathBuf};
+
+
+use std::{path::PathBuf};
 
 fn main() {
     let args: Vec<String> = args().collect();

@@ -11,7 +11,7 @@ pub fn extract_target_from_node(
     let mut target_set = HashSet::new();
     target_set.insert(target);
 
-    return walk_node_for_targets(&target_set, node, &db);
+    walk_node_for_targets(&target_set, node, db)
 }
 
 pub fn walk_node_for_targets(
