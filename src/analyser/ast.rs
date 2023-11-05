@@ -27,21 +27,18 @@ pub fn walk_node_for_targets(
     }
 
     match node.kind(db) {
-    SyntaxKind::SyntaxFile => {
-        println!("entered syntax file arm");
-        node.descendants(db)
-            .skip(1)
-            .for_each(|item| {
-                matches.append(&mut walk_node_for_targets(targets, item, db))
-            });
-    }
-    SyntaxKind::ItemList => {
-        println!("entered item list arm");
-        node.descendants(db).skip(1)
-            .for_each(|item| {
-                matches.append(&mut walk_node_for_targets(targets, item, db))
-            });
-    }
+        SyntaxKind::SyntaxFile => {
+            println!("entered syntax file arm");
+            node.descendants(db)
+                .skip(1)
+                .for_each(|item| matches.append(&mut walk_node_for_targets(targets, item, db)));
+        }
+        SyntaxKind::ItemList => {
+            println!("entered item list arm");
+            node.descendants(db)
+                .skip(1)
+                .for_each(|item| matches.append(&mut walk_node_for_targets(targets, item, db)));
+        }
         SyntaxKind::FunctionWithBody => {
             println!("entered function with body arm");
             for item in node.descendants(db).skip(1) {

@@ -8,8 +8,7 @@ use cairo_lang_parser::db::ParserGroup;
 
 use cairo_lang_parser::utils::SimpleParserDatabase;
 
-
-use std::{path::PathBuf};
+use std::path::PathBuf;
 
 fn main() {
     let args: Vec<String> = args().collect();

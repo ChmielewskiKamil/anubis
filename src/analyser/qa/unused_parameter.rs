@@ -1,12 +1,6 @@
-
-
-
-
 use cairo_lang_parser::utils::SimpleParserDatabase;
 
-use cairo_lang_syntax::node::kind::SyntaxKind::{
-    FunctionWithBody,
-};
+use cairo_lang_syntax::node::kind::SyntaxKind::FunctionWithBody;
 use cairo_lang_syntax::node::SyntaxNode;
 
 use crate::analyser::ast::extract_target_from_node;
