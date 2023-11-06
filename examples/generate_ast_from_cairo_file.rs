@@ -4,6 +4,10 @@ use cairo_lang_parser::{
 };
 use std::{fs::File, io::Write, path::PathBuf};
 
+// Run this example with `cargo run --example generate_ast_from_cairo_file`.
+// Feel free to change the file path to any other cairo file that you want to generate the AST for.
+// If you are looking at the generated markdown file in GitHub, make sure to click view "raw",
+// as this will make it readable.
 fn main() {
     let db = SimpleParserDatabase::default();
     let mut file_path = PathBuf::new();
