@@ -48,6 +48,31 @@ pub fn walk_node_for_targets(
                 matches.append(&mut walk_node_for_targets(targets, child.clone(), db))
             });
         }
+
+        SyntaxKind::FunctionDeclaration => {
+            println!("entered function declaration");
+            db.get_children(node).iter().for_each(|child| {
+                println!("{:?}", child.kind(db));
+                matches.append(&mut walk_node_for_targets(targets, child.clone(), db))
+            });
+        }
+
+        SyntaxKind::FunctionSignature => {
+            println!("entered function signature");
+            db.get_children(node).iter().for_each(|child| {
+                println!("{:?}", child.kind(db));
+                matches.append(&mut walk_node_for_targets(targets, child.clone(), db))
+            });
+        }
+
+        SyntaxKind::ParamList => {
+            println!("entered param list");
+            db.get_children(node).iter().for_each(|child| {
+                println!("{:?}", child.kind(db));
+                matches.append(&mut walk_node_for_targets(targets, child.clone(), db))
+            });
+        }
+
         _ => {}
     }
     matches
