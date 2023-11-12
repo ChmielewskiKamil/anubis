@@ -89,6 +89,50 @@ pub fn walk_node_for_targets(
             });
         }
 
+        SyntaxKind::Param => {
+            println!("entered param");
+            db.get_children(node).iter().for_each(|child| {
+                println!("{:?}", child.kind(db));
+                matches.append(&mut walk_node_for_targets(targets, child.clone(), db))
+            });
+        }
+
+        // e.g. function parameter modifier like (ref b: bool) -> ref is the modifier
+        SyntaxKind::ModifierList => {
+            println!("entered modifier list");
+            db.get_children(node).iter().for_each(|child| {
+                println!("{:?}", child.kind(db));
+                matches.append(&mut walk_node_for_targets(targets, child.clone(), db))
+            });
+        }
+
+        // e.g. function name
+        SyntaxKind::TerminalIdentifier => {
+            println!("entered terminal identifier");
+            db.get_children(node).iter().for_each(|child| {
+                println!("{:?}", child.kind(db));
+                matches.append(&mut walk_node_for_targets(targets, child.clone(), db))
+            });
+        }
+
+        // e.g. function parameter type
+        SyntaxKind::TypeClause => {
+            println!("entered type clause");
+            db.get_children(node).iter().for_each(|child| {
+                println!("{:?}", child.kind(db));
+                matches.append(&mut walk_node_for_targets(targets, child.clone(), db))
+            });
+        }
+
+        // e.g. function parameter name
+        SyntaxKind::ExprPath => {
+            println!("entered expr path");
+            db.get_children(node).iter().for_each(|child| {
+                println!("{:?}", child.kind(db));
+                matches.append(&mut walk_node_for_targets(targets, child.clone(), db))
+            });
+        }
+
         _ => {}
     }
     matches
