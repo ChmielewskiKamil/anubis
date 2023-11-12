@@ -16,18 +16,18 @@ use cairo_lang_syntax::node::{db::SyntaxGroup, kind::SyntaxKind, SyntaxNode};
 /// * `db` - The `SimpleParserDatabase` that you got from the `SimpleParserDatabase::default()` method. It is the Salsa database and is used in the official Cairo Language Parser.
 pub fn extract_target_from_node(
     target: SyntaxKind,
-    node: SyntaxNode,
+    node: &SyntaxNode,
     db: &SimpleParserDatabase,
 ) -> Vec<SyntaxNode> {
     let mut target_set = HashSet::new();
     target_set.insert(target);
 
-    walk_node_for_targets(&target_set, node, db)
+    walk_node_for_targets(&target_set, &node, db)
 }
 
 pub fn walk_node_for_targets(
     targets: &HashSet<SyntaxKind>,
-    node: SyntaxNode,
+    node: &SyntaxNode,
     db: &SimpleParserDatabase,
 ) -> Vec<SyntaxNode> {
     let mut matches = vec![];
@@ -37,99 +37,98 @@ pub fn walk_node_for_targets(
         matches.push(node.clone());
     }
 
-    println!("No match: {:?}", node.kind(db));
     // The db.get_children() returns only the direct children of the node.
     // We don't want to traverse all the way down the tree with the node.descendants() method, 
     // as this results in duplicate matches.
     match node.kind(db) {
         SyntaxKind::SyntaxFile => {
             println!("entered syntax file arm");
-            db.get_children(node).iter().for_each(|child| {
+            db.get_children(node.clone()).iter().for_each(|child| {
                 println!("{:?}", child.kind(db));
-                matches.append(&mut walk_node_for_targets(targets, child.clone(), db))
+                matches.append(&mut walk_node_for_targets(targets, child, db))
             });
         }
         SyntaxKind::ItemList => {
             println!("entered item list arm");
-            db.get_children(node).iter().for_each(|child| {
+            db.get_children(node.clone()).iter().for_each(|child| {
                 println!("{:?}", child.kind(db));
-                matches.append(&mut walk_node_for_targets(targets, child.clone(), db))
+                matches.append(&mut walk_node_for_targets(targets, child, db))
             });
         }
 
         SyntaxKind::FunctionWithBody => {
             println!("entered function with body arm");
-            db.get_children(node).iter().for_each(|child| {
+            db.get_children(node.clone()).iter().for_each(|child| {
                 println!("{:?}", child.kind(db));
-                matches.append(&mut walk_node_for_targets(targets, child.clone(), db))
+                matches.append(&mut walk_node_for_targets(targets, child, db))
             });
         }
 
         SyntaxKind::FunctionDeclaration => {
             println!("entered function declaration");
-            db.get_children(node).iter().for_each(|child| {
+            db.get_children(node.clone()).iter().for_each(|child| {
                 println!("{:?}", child.kind(db));
-                matches.append(&mut walk_node_for_targets(targets, child.clone(), db))
+                matches.append(&mut walk_node_for_targets(targets, child, db))
             });
         }
 
         SyntaxKind::FunctionSignature => {
             println!("entered function signature");
-            db.get_children(node).iter().for_each(|child| {
+            db.get_children(node.clone()).iter().for_each(|child| {
                 println!("{:?}", child.kind(db));
-                matches.append(&mut walk_node_for_targets(targets, child.clone(), db))
+                matches.append(&mut walk_node_for_targets(targets, child, db))
             });
         }
 
         SyntaxKind::ParamList => {
             println!("entered param list");
-            db.get_children(node).iter().for_each(|child| {
+            db.get_children(node.clone()).iter().for_each(|child| {
                 println!("{:?}", child.kind(db));
-                matches.append(&mut walk_node_for_targets(targets, child.clone(), db))
+                matches.append(&mut walk_node_for_targets(targets, child, db))
             });
         }
 
         SyntaxKind::Param => {
             println!("entered param");
-            db.get_children(node).iter().for_each(|child| {
+            db.get_children(node.clone()).iter().for_each(|child| {
                 println!("{:?}", child.kind(db));
-                matches.append(&mut walk_node_for_targets(targets, child.clone(), db))
+                matches.append(&mut walk_node_for_targets(targets, child, db))
             });
         }
 
         // e.g. function parameter modifier like (ref b: bool) -> ref is the modifier
         SyntaxKind::ModifierList => {
             println!("entered modifier list");
-            db.get_children(node).iter().for_each(|child| {
+            db.get_children(node.clone()).iter().for_each(|child| {
                 println!("{:?}", child.kind(db));
-                matches.append(&mut walk_node_for_targets(targets, child.clone(), db))
+                matches.append(&mut walk_node_for_targets(targets, child, db))
             });
         }
 
         // e.g. function name
         SyntaxKind::TerminalIdentifier => {
             println!("entered terminal identifier");
-            db.get_children(node).iter().for_each(|child| {
+            db.get_children(node.clone()).iter().for_each(|child| {
                 println!("{:?}", child.kind(db));
-                matches.append(&mut walk_node_for_targets(targets, child.clone(), db))
+                matches.append(&mut walk_node_for_targets(targets, child, db))
             });
         }
 
         // e.g. function parameter type
         SyntaxKind::TypeClause => {
             println!("entered type clause");
-            db.get_children(node).iter().for_each(|child| {
+            db.get_children(node.clone()).iter().for_each(|child| {
                 println!("{:?}", child.kind(db));
-                matches.append(&mut walk_node_for_targets(targets, child.clone(), db))
+                matches.append(&mut walk_node_for_targets(targets, child, db))
             });
         }
 
         // e.g. function parameter name
         SyntaxKind::ExprPath => {
             println!("entered expr path");
-            db.get_children(node).iter().for_each(|child| {
+            db.get_children(node.clone()).iter().for_each(|child| {
                 println!("{:?}", child.kind(db));
-                matches.append(&mut walk_node_for_targets(targets, child.clone(), db))
+                matches.append(&mut walk_node_for_targets(targets, child, db))
             });
         }
 
